@@ -23,7 +23,7 @@ const weapons = [
   { name: "dagger", power: 30 },
   { name: "claw hammer", power: 50 },
   { name: "sword", power: 100 },
-]
+];
 
 const monsters = [
   {
@@ -41,35 +41,44 @@ const monsters = [
     level: 20,
     health: 300,
   },
-]
+];
 
-const locations = [{
-  name: "town square",
-  "button text": ["Go to store", "Go to cave", "Fight dragon"],
-  "button functions": [goStore, goCave, fightDragon],
-  text: "You are in the town square. You see a sign that says \"Store\".",
-},
-{
-  name: "store",
-  "button text": ["Buy 10 health (10 gold)", "Buy weapon (30 gold)", "Go to town square"],
-  "button functions": [buyHealth, buyWeapon, goTown],
-  text: "You enter the store.",
+const locations = [
+  {
+    name: "town square",
+    "button text": ["Go to store", "Go to cave", "Fight dragon"],
+    "button functions": [goStore, goCave, fightDragon],
+    text: 'You are in the town square. You see a sign that says "Store".',
   },
-{
-  name: "cave",
-  "button text": ["Fight slime", "Fight fanged beast", "Go to town square"],
-  "button functions": [fightSlime, fightBeast, goTown],
-  text: "You enter the cave. You see some monsters."
+  {
+    name: "store",
+    "button text": [
+      "Buy 10 health (10 gold)",
+      "Buy weapon (30 gold)",
+      "Go to town square",
+    ],
+    "button functions": [buyHealth, buyWeapon, goTown],
+    text: "You enter the store.",
+  },
+  {
+    name: "cave",
+    "button text": ["Fight slime", "Fight fanged beast", "Go to town square"],
+    "button functions": [fightSlime, fightBeast, goTown],
+    text: "You enter the cave. You see some monsters.",
   },
   {
     name: "fight",
     "button text": ["Attack", "Dodge", "Run"],
     "button functions": [attack, dodge, goTown],
     text: "You are fighting a monster.",
-},
+  },
   {
     name: "kill monster",
-    "button text": ["Go to town square", "Go to town square", "Go to town square"],
+    "button text": [
+      "Go to town square",
+      "Go to town square",
+      "Go to town square",
+    ],
     "button functions": [goTown, goTown, easterEgg],
     text: 'The monster screams "Arg!" as it dies. You gain experience points and find gold.',
   },
@@ -90,8 +99,8 @@ const locations = [{
     "button text": ["2", "8", "Go to town square?"],
     "button functions": [pickTwo, pickEight, goTown],
     text: "You find a secret game. Pick a number above. Ten numbers will be randomly chosen between 0 and 10. If the number you choose matches one of the random numbers, you win!",
-  }
-]
+  },
+];
 
 //? initialize buttons
 button1.onclick = goStore;
@@ -110,7 +119,8 @@ function update(location) {
   button1.onclick = goStore;
   button2.onclick = goCave;
   button3.onclick = fightDragon;
-  text.innerHTML = "You are in the town square. You see a sign that says \"Store\".";
+  text.innerHTML =
+    'You are in the town square. You see a sign that says "Store".';
 }
 
 function goTown() {
@@ -118,26 +128,26 @@ function goTown() {
 }
 
 function goStore() {
-    update(locations[1]);
+  update(locations[1]);
 }
 
 function goCave() {
-    update(locations[2]);
+  update(locations[2]);
 }
 
 function buyHealth() {
-  if(gold >= 10) {
-  gold -= 10;
-  health += 10;
-  goldText.innerText = gold;
-  healthText.innerText = health;
-  } else{
-    text.innerText = "You do not have enough gold to buy health."
+  if (gold >= 10) {
+    gold -= 10;
+    health += 10;
+    goldText.innerText = gold;
+    healthText.innerText = health;
+  } else {
+    text.innerText = "You do not have enough gold to buy health.";
   }
 }
 
 function buyWeapon() {
-  if (currentWeaponIndex < weapons.length -1) {
+  if (currentWeaponIndex < weapons.length - 1) {
     if (gold >= 30) {
       gold -= 30;
       currentWeaponIndex++;
@@ -191,14 +201,16 @@ function goFight() {
 
 function attack() {
   text.innerText = "The " + monsters[fighting].name + " attacks.";
-  text.innerText += " You attack it with your " + weapons[currentWeaponIndex].name + ".";
+  text.innerText +=
+    " You attack it with your " + weapons[currentWeaponIndex].name + ".";
   health -= getMonsterAttackValue(monsters[fighting].level);
-  
+
   if (isMonsterHit()) {
-  monsterHealth -= weapons[currentWeaponIndex].power + Math.floor(Math.random() * xp) + 1;
-}else {
-  text.innerText += " You miss."
-}
+    monsterHealth -=
+      weapons[currentWeaponIndex].power + Math.floor(Math.random() * xp) + 1;
+  } else {
+    text.innerText += " You miss.";
+  }
 
   healthText.innerText = health;
   monsterHealthText.innerText = monsterHealth;
@@ -211,25 +223,24 @@ function attack() {
       defeatMonster();
     }
   }
-  if (Math.random() <= .1
-  && inventory.length !== 1
-  ) {
+  if (Math.random() <= 0.1 && inventory.length !== 1) {
     text.innerText += " Your " + inventory.pop() + " breaks.";
     currentWeaponIndex--;
-}
+  }
 }
 
 function getMonsterAttackValue(level) {
-  const hit = (level * 5) - (Math.floor(Math.random() * xp));
-  return hit > 0 ? hit : 0
+  const hit = level * 5 - Math.floor(Math.random() * xp);
+  return hit > 0 ? hit : 0;
 }
 
 function isMonsterHit() {
-  return Math.random() > .2 || health < 20
+  return Math.random() > 0.2 || health < 20;
 }
 
 function dodge() {
-  text.innerText = "You dodge the attack from the " + monsters[fighting].name + ".";
+  text.innerText =
+    "You dodge the attack from the " + monsters[fighting].name + ".";
 }
 
 function defeatMonster() {
@@ -267,7 +278,7 @@ function easterEgg() {
 
 function pickTwo() {
   pick(2);
- }
+}
 
 function pickEight() {
   pick(8);
